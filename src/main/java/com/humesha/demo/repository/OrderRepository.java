@@ -10,6 +10,7 @@ import com.humesha.demo.model.Order;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
+    List<Order> findByUserId(Long userId);
     // For the customer website (order history)
     List<Order> findByUserIdOrderByOrderDateDesc(Long userId);
     

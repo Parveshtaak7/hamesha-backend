@@ -94,4 +94,19 @@ public class OrderController {
         
         return ResponseEntity.ok(updatedOrder);
     }
+    // CUSTOMER - GET ORDER HISTORY
+@GetMapping("/user")
+public ResponseEntity<?> getUserOrderHistory(
+        @RequestHeader(value = "Authorization", required = false) String authHeader) {
+    
+    try {
+        String token = authHeader.substring(7);
+        Long userId = jwtUtil.extractId(token);
+        
+        List<Order> userOrders = orderRepository.findByUserId(userId); 
+        return ResponseEntity.ok(userOrders);
+    } catch (Exception e) {
+        return ResponseEntity.status(401).body("Invalid session.");
+    }
+}
 }

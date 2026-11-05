@@ -19,6 +19,7 @@ public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
 
+    // Injecting your JWT filter
     public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
         this.jwtAuthFilter = jwtAuthFilter;
     }
@@ -29,26 +30,27 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll() 
-                
-                // Store Status Routing: Public can view, only ADMIN can toggle
-                .requestMatchers(HttpMethod.GET, "/api/store/status").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/api/store/status/toggle").hasAuthority("ROLE_ADMIN")
-                
-                // Menu Routing: Public can view, only ADMIN can edit
+                // 1. Public Routes (No Token Needed)
+                .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/menu/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/store/status").permitAll()
+                
+                // 2. Admin Routes (Requires Admin Token)
                 .requestMatchers(HttpMethod.POST, "/api/menu/**").hasAuthority("ROLE_ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/menu/**").hasAuthority("ROLE_ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/menu/**").hasAuthority("ROLE_ADMIN")
-                
-                // Order Routing: Customers can checkout, ADMIN handles admin routes
-                .requestMatchers(HttpMethod.POST, "/api/orders/checkout").authenticated()
-                .requestMatchers(HttpMethod.GET, "/api/orders/history").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/api/store/status/toggle").hasAuthority("ROLE_ADMIN")
                 .requestMatchers("/api/orders/admin/**").hasAuthority("ROLE_ADMIN")
                 
+                // 3. User/Customer Routes (Requires Any Valid Token)
+                .requestMatchers("/api/users/profile").authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/orders/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/orders/user/**").authenticated()
+                
+                // 4. Catch-all: Anything else must be authenticated
                 .anyRequest().authenticated()
             )
-            // Add our custom JWT filter before standard Spring Security filters
+            // Add custom JWT filter before standard Spring Security filters
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         
         return http.build();
@@ -57,10 +59,10 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:5174")); 
+        // Allow your React frontend port
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:5174"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-        
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
