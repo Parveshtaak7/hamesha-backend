@@ -19,7 +19,7 @@ import com.humesha.demo.util.JwtUtil;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "https://humesha-restaurant.vercel.app")
 public class UserController {
 
     @Autowired

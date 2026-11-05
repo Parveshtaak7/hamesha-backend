@@ -13,7 +13,7 @@ import com.humesha.demo.repository.StoreStatusRepository;
 
 @RestController
 @RequestMapping("/api/store")
-@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"})
+@CrossOrigin(origins = {"https://humesha-restaurant.vercel.app", "https://humesha-restaurant.vercel.app"})
 public class StoreStatusController {
 
     @Autowired

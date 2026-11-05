@@ -23,7 +23,7 @@ import com.humesha.demo.util.JwtUtil;
 
 @RestController
 @RequestMapping("/api/orders")
-@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"})
+@CrossOrigin(origins = {"https://humesha-restaurant.vercel.app", "https://humesha-restaurant.vercel.app"})
 public class OrderController {
 
     private final OrderService orderService;
