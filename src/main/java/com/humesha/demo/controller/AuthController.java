@@ -57,15 +57,23 @@ public class AuthController {
             String email = (String) userInfo.get("email");
             String name = (String) userInfo.get("name");
 
-            User user = userRepository.findByEmail(email).orElse(null);
+          User user = userRepository.findByEmail(email).orElse(null);
             
             if (user == null) {
                 user = new User();
                 user.setEmail(email);
                 user.setName(name);
-                user.setRole("ROLE_CUSTOMER"); // Ensure new users get standard customer role
-                user = userRepository.save(user);
             }
+
+            // CRITICAL: Make your specific email the Admin
+            if (email.equalsIgnoreCase("parvesh.your.email@gmail.com")) { // <--- PUT YOUR REAL GMAIL HERE
+                user.setRole("ROLE_ADMIN");
+            } else if (user.getRole() == null) {
+                user.setRole("ROLE_CUSTOMER");
+            }
+
+            // Always save to catch role upgrades for existing users
+            user = userRepository.save(user);
 
             // GENERATE SECURE JWT INSTEAD OF VULNERABLE ID STRING
             String secureToken = jwtUtil.generateToken(user);
