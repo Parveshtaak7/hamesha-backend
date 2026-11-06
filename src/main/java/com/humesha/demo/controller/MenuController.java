@@ -20,7 +20,7 @@ import com.humesha.demo.repository.MenuItemRepository;
 
 @RestController
 @RequestMapping("/api/menu")
-@CrossOrigin(origins = {"https://humesha-restaurant.vercel.app", "http://localhost:5173", "http://localhost:5174", "http://frontend-owner-chi.vercel.app"})
+@CrossOrigin(origins = {"https://humesha-restaurant.vercel.app", "https://frontend-owner-chi.vercel.app", "http://localhost:5173", "http://localhost:5174",})
 public class MenuController {
 
     @Autowired
