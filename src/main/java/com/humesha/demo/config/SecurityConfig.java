@@ -60,7 +60,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // Allow your React frontend port
-        configuration.setAllowedOrigins(Arrays.asList("https://humesha-restaurant.vercel.app", "https://humesha-restaurant.vercel.app"));
+        configuration.setAllowedOrigins(Arrays.asList("https://humesha-restaurant.vercel.app", "http://localhost:5173/", "http://localhost:5174/"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
