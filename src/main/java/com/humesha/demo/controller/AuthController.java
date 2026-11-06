@@ -66,7 +66,7 @@ public class AuthController {
             }
 
             // CRITICAL: Make your specific email the Admin
-            if (email.equalsIgnoreCase("parvesh.your.email@gmail.com")) { // <--- PUT YOUR REAL GMAIL HERE
+            if (email.equalsIgnoreCase("professionalusage07@gmail.com")) { // <--- PUT YOUR REAL GMAIL HERE
                 user.setRole("ROLE_ADMIN");
             } else if (user.getRole() == null) {
                 user.setRole("ROLE_CUSTOMER");
