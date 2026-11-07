@@ -1,6 +1,7 @@
 package com.humesha.demo.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,8 +66,14 @@ public class AuthController {
                 user.setName(name);
             }
 
-            // CRITICAL: Make your specific email the Admin
-            if (email.equalsIgnoreCase("batraankit987@gmail.com")) { // <--- PUT YOUR REAL GMAIL HERE
+            // 1. Define all your approved admin emails here (keep them lowercase)
+            List<String> adminEmails = List.of(
+                "professionalusage07@gmail.com", 
+                "batraankit987@gmail.com"
+            );
+
+            // 2. Check if the logged-in email exists in that list
+            if (adminEmails.contains(email.toLowerCase())) { 
                 user.setRole("ROLE_ADMIN");
             } else if (user.getRole() == null) {
                 user.setRole("ROLE_CUSTOMER");
